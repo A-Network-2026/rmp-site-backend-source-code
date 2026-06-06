@@ -1,0 +1,22 @@
+{
+  "error.invalid_input": "Hindi wastong input.",
+  "error.email_password_required": "Kailangan ang email at password.",
+  "error.invalid_email": "Hindi wastong format ng email.",
+  "error.invalid_credentials": "Maling email o password.",
+  "error.otp_required": "Kailangan ang OTP verification.",
+  "error.otp_invalid": "Maling OTP code.",
+  "error.otp_expired": "Nag-expire na ang OTP. Humingi ng bago.",
+  "error.otp_attempts_exceeded": "Masyadong maraming OTP attempts. Mag-login muli.",
+  "error.unauthorized": "Hindi awtorisado.",
+  "error.user_not_found": "Hindi makita ang user.",
+  "error.cooldown_active": "Aktibo pa ang cooldown ng session.",
+  "error.session_missed": "Na-miss ang session. Lumampas na ang claim window.",
+  "error.session_cap_reached": "Naabot na ang maximum sessions.",
+  "error.session_claim_failed": "Hindi naklaim ang session.",
+  "error.language_invalid": "Hindi wastong language code.",
+  "success.login": "Matagumpay ang pag-login.",
+  "success.otp_verified": "Na-verify ang OTP. Matagumpay ang pag-login.",
+  "success.language_updated": "Na-update ang wika.",
+  "success.session_claimed": "Matagumpay na na-claim ang session.",
+  "success.otp_sent": "Naipadala ang OTP sa iyong email."
+}

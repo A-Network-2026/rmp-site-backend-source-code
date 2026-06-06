@@ -1,0 +1,100 @@
+name: anet-private-mainnet-release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+    paths:
+      - "anet-private-mainnet/**"
+      - ".github/workflows/anet-private-mainnet-release.yml"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    defaults:
+      run:
+        working-directory: anet-private-mainnet
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.86.0
+
+      - name: Cache cargo registry
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: anet-private-mainnet
+
+      - name: Install native dependencies
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libssl-dev tar
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Prepare release bundle
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp target/release/anet-private-mainnet dist/
+          cp README.md dist/
+          cp -R config dist/config
+          tar -C dist -czf anet-private-mainnet-linux-amd64.tar.gz .
+
+      - name: Upload release bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anet-private-mainnet-release-bundle
+          path: anet-private-mainnet/anet-private-mainnet-linux-amd64.tar.gz
+          if-no-files-found: error
+
+      - name: Set container image name
+        id: vars
+        shell: bash
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/anet-private-mainnet" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.vars.outputs.image }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push container image
+        uses: docker/build-push-action@v6
+        with:
+          context: anet-private-mainnet
+          file: anet-private-mainnet/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: anet-private-mainnet/anet-private-mainnet-linux-amd64.tar.gz
+          generate_release_notes: true

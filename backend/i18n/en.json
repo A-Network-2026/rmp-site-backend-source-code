@@ -1,0 +1,22 @@
+{
+  "error.invalid_input": "Invalid input.",
+  "error.email_password_required": "Email and password are required.",
+  "error.invalid_email": "Invalid email format.",
+  "error.invalid_credentials": "Invalid email or password.",
+  "error.otp_required": "OTP verification is required.",
+  "error.otp_invalid": "Invalid OTP code.",
+  "error.otp_expired": "OTP expired. Request a new code.",
+  "error.otp_attempts_exceeded": "Too many OTP attempts. Please login again.",
+  "error.unauthorized": "Unauthorized.",
+  "error.user_not_found": "User not found.",
+  "error.cooldown_active": "Session cooldown is still active.",
+  "error.session_missed": "Session missed. Claim window exceeded.",
+  "error.session_cap_reached": "Maximum sessions reached.",
+  "error.session_claim_failed": "Session claim failed.",
+  "error.language_invalid": "Invalid language code.",
+  "success.login": "Login successful.",
+  "success.otp_verified": "OTP verified. Login successful.",
+  "success.language_updated": "Language updated.",
+  "success.session_claimed": "Session claimed successfully.",
+  "success.otp_sent": "OTP sent to your email."
+}

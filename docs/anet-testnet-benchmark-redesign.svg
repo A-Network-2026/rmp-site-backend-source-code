@@ -1,0 +1,98 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="100" y1="40" x2="1450" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111C"/>
+      <stop offset="0.55" stop-color="#0B1624"/>
+      <stop offset="1" stop-color="#111D2C"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="330" y1="90" x2="1190" y2="340" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#79F0FF"/>
+      <stop offset="1" stop-color="#39C4FF"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="176" y1="304" x2="1420" y2="732" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7AF5D2"/>
+      <stop offset="0.6" stop-color="#66B8FF"/>
+      <stop offset="1" stop-color="#B8A2FF"/>
+    </linearGradient>
+    <linearGradient id="anetBadge" x1="180" y1="314" x2="440" y2="374" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7AF5D2"/>
+      <stop offset="1" stop-color="#3DCCFF"/>
+    </linearGradient>
+    <filter id="shadow" x="120" y="110" width="1360" height="690" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="28" flood-color="#02060D" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" rx="42" fill="url(#bg)"/>
+  <circle cx="1290" cy="138" r="220" fill="#1B3150" fill-opacity="0.28"/>
+  <circle cx="1370" cy="96" r="120" fill="#27466E" fill-opacity="0.18"/>
+  <circle cx="238" cy="792" r="180" fill="#0D2540" fill-opacity="0.34"/>
+  <path d="M130 162C232 104 328 82 462 82C693 82 822 193 1021 193C1132 193 1244 153 1377 80" stroke="#29445F" stroke-opacity="0.45" stroke-width="2"/>
+
+  <g filter="url(#shadow)">
+    <rect x="112" y="110" width="1376" height="682" rx="34" fill="#F7FAFD"/>
+  </g>
+
+  <rect x="144" y="142" width="1312" height="138" rx="28" fill="#EFF6FB"/>
+  <rect x="176" y="175" width="54" height="54" rx="16" fill="#07111C"/>
+  <path d="M194 190H212C222.493 190 231 198.507 231 209V209C231 219.493 222.493 228 212 228H194V190Z" fill="#7AF5D2"/>
+  <path d="M191 206.5C191 198.492 197.492 192 205.5 192H214V221H205.5C197.492 221 191 214.508 191 206.5Z" fill="#39C4FF"/>
+  <path d="M197 184L220 196.5L197 209V184Z" fill="#B8A2FF"/>
+  <text x="250" y="198" fill="#0C1724" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">A Network</text>
+  <text x="250" y="230" fill="#58708B" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600">Layer 1 Testnet Finality and Settlement Benchmark</text>
+
+  <text x="176" y="344" fill="#0B1522" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="800">A Network Testnet Benchmark</text>
+  <text x="176" y="404" fill="#24364B" font-family="Segoe UI, Arial, sans-serif" font-size="50" font-weight="800">Finality, Sync, and Settlement View</text>
+  <text x="176" y="452" fill="#567087" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="500">This version adds A Network using the current live testnet design: Web2 to Layer 1 sync is live, while finality still follows the configured epoch cadence.</text>
+
+  <rect x="176" y="486" width="276" height="54" rx="27" fill="url(#anetBadge)"/>
+  <text x="204" y="520" fill="#07111C" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="800">Web2 to Layer 1 Sync: Live</text>
+
+  <rect x="484" y="486" width="264" height="54" rx="27" fill="#E9F2FA"/>
+  <text x="512" y="520" fill="#29445F" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Current default epoch: 6 hours</text>
+
+  <rect x="176" y="576" width="1248" height="58" rx="18" fill="#ECF2F7"/>
+  <text x="210" y="614" fill="#617C93" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Chain</text>
+  <text x="700" y="614" fill="#617C93" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Full Finality</text>
+  <text x="1005" y="614" fill="#617C93" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Type</text>
+  <text x="1270" y="614" fill="#617C93" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Notes</text>
+
+  <rect x="176" y="646" width="1248" height="82" rx="20" fill="#0C1826"/>
+  <rect x="196" y="667" width="160" height="40" rx="20" fill="url(#accent)" fill-opacity="0.16"/>
+  <text x="214" y="693" fill="#7AF5D2" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="800">A Network</text>
+  <text x="700" y="693" fill="#F9FCFF" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">Up to 6h</text>
+  <text x="1005" y="693" fill="#CFE0F2" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Deterministic epoch settlement</text>
+  <text x="1270" y="684" fill="#9DB2C7" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600">Current default TPoW epoch.</text>
+  <text x="1270" y="707" fill="#9DB2C7" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600">Web2 delta sync now live.</text>
+
+  <line x1="176" y1="742" x2="1424" y2="742" stroke="#E5EDF4" stroke-width="2"/>
+
+  <text x="210" y="785" fill="#6E8296" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">InterLink Chain</text>
+  <text x="700" y="785" fill="#5B61FF" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="800">&lt;2.3s</text>
+  <text x="1005" y="785" fill="#46596E" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Deterministic (BFT 4-phase)</text>
+
+  <line x1="176" y1="807" x2="1424" y2="807" stroke="#E5EDF4" stroke-width="2"/>
+
+  <text x="210" y="848" fill="#24364B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Ethereum</text>
+  <text x="700" y="848" fill="#24364B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">~12.8 min</text>
+  <text x="1005" y="848" fill="#46596E" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Economic</text>
+
+  <line x1="840" y1="742" x2="840" y2="865" stroke="#E5EDF4" stroke-width="2" opacity="0.7"/>
+  <line x1="972" y1="742" x2="972" y2="865" stroke="#E5EDF4" stroke-width="2" opacity="0.7"/>
+  <line x1="1235" y1="742" x2="1235" y2="865" stroke="#E5EDF4" stroke-width="2" opacity="0.7"/>
+
+  <text x="864" y="848" fill="#24364B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">BNB Chain</text>
+  <text x="1160" y="848" fill="#24364B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">~2.25s</text>
+  <text x="1280" y="848" fill="#46596E" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="700">Deterministic (45 validators)</text>
+
+  <text x="864" y="785" fill="#24364B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">PI Network</text>
+  <text x="1160" y="785" fill="#24364B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">~5 to 7s</text>
+  <text x="1280" y="785" fill="#46596E" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="700">Deterministic (SCP)</text>
+
+  <line x1="840" y1="720" x2="1424" y2="720" stroke="#E5EDF4" stroke-width="2" opacity="0.7"/>
+
+  <rect x="1122" y="142" width="302" height="110" rx="24" fill="#09131F"/>
+  <text x="1152" y="186" fill="#7AF5D2" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="800">A Network position today</text>
+  <text x="1152" y="214" fill="#F8FBFE" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Strong on ledger continuity.</text>
+  <text x="1152" y="240" fill="#9DB2C7" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600">Not yet positioned as a sub-3s payment finality chain.</text>
+</svg>

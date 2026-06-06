@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: anetwork-ai-backend
+    env: docker
+    plan: starter
+    autoDeploy: true
+    healthCheckPath: /api/v1/health
+    disk:
+      name: chroma-data
+      mountPath: /data
+      sizeGB: 5
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: API_V1_PREFIX
+        value: /api/v1
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 10080
+      - key: CHROMA_PERSIST_DIRECTORY
+        value: /data/chroma
+      - key: CHROMA_COLLECTION
+        value: anet_user_memory
+      - key: RAG_TOP_K
+        value: 6
+      - key: CHUNK_SIZE
+        value: 900
+      - key: CHUNK_OVERLAP
+        value: 180
+      - key: ADS_SUPPORT_TOKEN
+        value: anet-app-2026-support-key

@@ -1,0 +1,58 @@
+name: anet-private-mainnet-ci
+
+on:
+  push:
+    paths:
+      - "anet-private-mainnet/**"
+      - ".github/workflows/anet-private-mainnet-ci.yml"
+  pull_request:
+    paths:
+      - "anet-private-mainnet/**"
+      - ".github/workflows/anet-private-mainnet-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  private-mainnet-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: anet-private-mainnet
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.86.0
+          components: rustfmt, clippy
+
+      - name: Cache cargo registry
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: anet-private-mainnet
+
+      - name: Install native dependencies
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libssl-dev
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run clippy
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Upload release binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anet-private-mainnet-linux-amd64
+          path: anet-private-mainnet/target/release/anet-private-mainnet
+          if-no-files-found: error
+
+      - name: Build Docker image
+        run: docker build -t anet-private-mainnet:ci .

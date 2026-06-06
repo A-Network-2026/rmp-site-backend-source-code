@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A-Network Ant Code Redirect</title>
+  <meta name="description" content="A-Network Ant Code redirect page" />
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = (params.get('ref') || '').trim();
+      var target = 'https://a-network.net/';
+      if (ref) {
+        target += '?ref=' + encodeURIComponent(ref);
+      }
+      window.location.replace(target);
+    })();
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #05070f;
+      color: #d9f9ff;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 24px;
+    }
+    .card {
+      max-width: 520px;
+      border: 1px solid rgba(0, 255, 255, 0.25);
+      border-radius: 12px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    a { color: #42f2ff; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Redirecting to A-Network Colony...</h1>
+    <p>If you are not redirected automatically, tap the link below.</p>
+    <p><a id="fallback" href="https://a-network.net/">Open A-Network</a></p>
+  </div>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = (params.get('ref') || '').trim();
+      var target = 'https://a-network.net/';
+      if (ref) {
+        target += '?ref=' + encodeURIComponent(ref);
+      }
+      document.getElementById('fallback').href = target;
+    })();
+  </script>
+</body>
+</html>

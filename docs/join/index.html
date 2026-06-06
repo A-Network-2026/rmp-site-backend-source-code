@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A-Network Colony Join</title>
+  <meta name="description" content="Join A-Network with an Ant Code.">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root {
+      --bg: #07101a;
+      --panel: #0c1f31;
+      --text: #eff6ff;
+      --muted: #a2b4c9;
+      --accent: #58c5ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(circle at top right, rgba(88, 197, 255, 0.2), transparent 30%), var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(560px, 100%);
+      background: var(--panel);
+      border: 1px solid rgba(88, 197, 255, 0.25);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .code {
+      margin: 14px 0 18px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(88, 197, 255, 0.12);
+      color: var(--text);
+      word-break: break-word;
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    a.button {
+      display: inline-block;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    a.primary {
+      background: var(--accent);
+      color: #03111c;
+    }
+
+    a.secondary {
+      border: 1px solid rgba(88, 197, 255, 0.45);
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Joining An A-Network Colony</h1>
+    <p>We are opening the app with your Ant Code. If the app is not installed, use the Play Store button below.</p>
+    <div class="code" id="codeBox">Ant Code: loading...</div>
+    <div class="actions">
+      <a id="openApp" class="button primary" href="#">Open App</a>
+      <a id="openPlay" class="button secondary" href="#" target="_blank" rel="noopener noreferrer">Open Play Store</a>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = (params.get('ref') || '').trim();
+      var normalizedRef = ref || 'ANET';
+
+      var appUrl = 'app://a-network/join?ref=' + encodeURIComponent(normalizedRef);
+      var playUrl = 'https://play.google.com/store/apps/details?id=com.anetwork.app&referrer=' + encodeURIComponent('ref=' + normalizedRef);
+
+      document.getElementById('codeBox').textContent = 'Ant Code: ' + normalizedRef;
+      document.getElementById('openApp').href = appUrl;
+      document.getElementById('openPlay').href = playUrl;
+
+      // Try opening app first, then keep Play fallback available.
+      window.location.href = appUrl;
+    })();
+  </script>
+</body>
+</html>

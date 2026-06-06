@@ -1,0 +1,819 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Network Web5 | Live Coordination Surface</title>
+  <meta name="description" content="A Network Web5 view of the Live Layer 1 Private Mainnet: event-driven settlement blocks, active validator participation, total sessions, and synchronized supply data.">
+  <meta name="theme-color" content="#050b12">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="A Network Web5 | Live Coordination Surface">
+  <meta property="og:description" content="Live Web5-facing view of the A Network Layer 1 private mainnet with event-driven settlement blocks and synchronized supply data.">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://explorer.a-network.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #041019;
+      --bg-2: #081827;
+      --panel: rgba(10, 24, 39, 0.9);
+      --line: rgba(89, 201, 255, 0.16);
+      --line-strong: rgba(106, 231, 177, 0.34);
+      --text: #eff6ff;
+      --muted: #9ab3c8;
+      --accent: #6ae7b1;
+      --accent-2: #59c9ff;
+      --accent-3: #d3ff78;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(106, 231, 177, 0.10), transparent 26%),
+        radial-gradient(circle at top right, rgba(89, 201, 255, 0.12), transparent 24%),
+        linear-gradient(180deg, #07101a 0%, var(--bg) 100%);
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .hero,
+    .panel,
+    .stat-card,
+    .table-shell {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      margin: 16px 0 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 4.1rem);
+      line-height: 1.04;
+      background: linear-gradient(135deg, #ffffff 22%, var(--accent-2) 68%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p,
+    .stat-copy,
+    .table-note,
+    .muted {
+      color: var(--muted);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      color: #041018;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(89, 201, 255, 0.24);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent-2);
+      outline-offset: 2px;
+    }
+
+    .hero-meta {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .hero-meta div {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-meta span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .hero-meta strong {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      overflow-wrap: anywhere;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .action-grid,
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .panel-head h2,
+    .panel-head h3 {
+      margin: 8px 0 0;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .action-card,
+    .info-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .action-card h3,
+    .info-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .action-card p,
+    .info-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .tx-form {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .tx-form label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .tx-form label.seed-field {
+      grid-column: span 2;
+    }
+
+    .tx-form button {
+      align-self: end;
+      min-height: 52px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px 18px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #041018;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .tx-form button:hover,
+    .tx-form button:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(89, 201, 255, 0.24);
+    }
+
+    .tx-form button:focus-visible {
+      outline: 2px solid var(--accent-2);
+      outline-offset: 2px;
+    }
+
+    .tx-form input {
+      min-height: 48px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(3, 10, 18, 0.72);
+      color: var(--text);
+      padding: 12px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      outline: none;
+    }
+
+    .tx-form input:focus {
+      border-color: var(--line-strong);
+      box-shadow: 0 0 0 3px rgba(106, 231, 177, 0.08);
+    }
+
+    .tx-result {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .tx-result.ok {
+      border-color: rgba(106, 231, 177, 0.32);
+      background: rgba(106, 231, 177, 0.08);
+      color: #dffdf1;
+    }
+
+    .tx-result.error {
+      border-color: rgba(242, 139, 130, 0.32);
+      background: rgba(242, 139, 130, 0.08);
+      color: #ffd4cf;
+    }
+
+    .stat-card {
+      padding: 18px;
+    }
+
+    .stat-card label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.2rem, 4vw, 2.3rem);
+      color: var(--text);
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .table-shell {
+      padding: 22px;
+    }
+
+    .table-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      align-items: end;
+    }
+
+    .table-head h2 {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+    }
+
+    th,
+    td {
+      padding: 14px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--accent-2);
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    tbody tr {
+      background: rgba(255,255,255,0.035);
+      transition: background-color 140ms ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,0.07);
+    }
+
+    tbody td:first-child {
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+    }
+
+    tbody td:last-child {
+      border-top-right-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .kicker {
+      color: var(--accent-3);
+      font-weight: 700;
+    }
+
+    .error {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(242, 139, 130, 0.32);
+      background: rgba(242, 139, 130, 0.08);
+      color: #ffd4cf;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .stats,
+      .action-grid,
+      .info-grid,
+      .tx-form {
+        grid-template-columns: 1fr;
+      }
+
+      .tx-form label.seed-field {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(1180px, calc(100% - 18px));
+      }
+
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody tr {
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      td {
+        padding: 10px 12px;
+        display: grid;
+        grid-template-columns: minmax(120px, 0.9fr) minmax(0, 1.1fr);
+        gap: 10px;
+      }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--accent-2);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Live Web5 Surface</div>
+        <h1>A Network Web5 Coordination View</h1>
+        <p>
+          This page is a lightweight Web5-facing surface over the live A Network Layer 1 private mainnet. It reflects the current chain directly from the public explorer APIs: latest event-driven settlement blocks, active validator participation, total sessions, and current transfer-window cadence.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="https://explorer.a-network.net/explorer" target="_blank" rel="noopener noreferrer">Open Explorer</a>
+          <a class="btn btn-ghost" href="#worker-transfer">Worker Transfer</a>
+          <a class="btn btn-ghost" href="web4.html">Open Web4 Page</a>
+          <a class="btn btn-ghost" href="whitepaper.html">Read Whitepaper</a>
+        </div>
+      </div>
+      <div class="hero-meta">
+        <div>
+          <span>Current Mode</span>
+          <strong>Live Layer 1 Private Mainnet</strong>
+        </div>
+        <div>
+          <span>Transfer Cadence</span>
+          <strong id="cadence">Loading...</strong>
+        </div>
+        <div>
+          <span>Current Settlement Window Ends</span>
+          <strong id="epochEnd" class="mono">Loading...</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <article class="stat-card">
+        <label>Latest Block</label>
+        <strong id="blockCount">0</strong>
+        <div class="stat-copy">Most recent finalized settlement block.</div>
+      </article>
+      <article class="stat-card">
+        <label>Total Sessions</label>
+        <strong id="sessionCount">0</strong>
+        <div class="stat-copy">Completed Web2 mining sessions tracked by the live metrics feed.</div>
+      </article>
+      <article class="stat-card">
+        <label>Active Miners</label>
+        <strong id="minerCount">0</strong>
+        <div class="stat-copy">Workers actively mining in the current Web2 economy.</div>
+      </article>
+      <article class="stat-card">
+        <label>Activated Supply</label>
+        <strong id="activatedSupply">0</strong>
+        <div class="stat-copy">Current Layer 1 activated supply represented in ANET.</div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="eyebrow">Web5 Quick Access</div>
+          <h2>Fast Actions</h2>
+        </div>
+        <div class="table-note">Mirrors the quick-access direction now used in the app Web5 tab.</div>
+      </div>
+      <div class="action-grid">
+        <article class="action-card">
+          <h3>Worker Transfer</h3>
+          <p>Jump directly to the live Layer 1 transfer surface and submit ANT-denominated mempool transactions from the public explorer APIs.</p>
+          <a class="btn btn-block" href="#worker-transfer">Open Transfer</a>
+        </article>
+        <article class="action-card">
+          <h3>Live Explorer</h3>
+          <p>Open the full explorer dashboard for detailed block, wallet, validator, and on-chain settlement visibility.</p>
+          <a class="btn btn-block" href="https://explorer.a-network.net/explorer" target="_blank" rel="noopener noreferrer">Open Explorer</a>
+        </article>
+        <article class="action-card">
+          <h3>Web4 + Whitepaper</h3>
+          <p>Review the broader ecosystem context, migration framing, and current Layer 1 positioning through the public docs.</p>
+          <div class="hero-actions">
+            <a class="btn btn-ghost" href="web4.html">Web4 Page</a>
+            <a class="btn btn-ghost" href="whitepaper.html">Whitepaper</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="eyebrow">App Tools</div>
+          <h3>Wallet Security Shortcuts</h3>
+        </div>
+        <div class="table-note">These stay inside the mobile app because they depend on the signed-in wallet owner session.</div>
+      </div>
+      <div class="info-grid">
+        <article class="info-card">
+          <h3>View Seed</h3>
+          <p>The app Web5 tab now includes direct access to seed-phrase reveal so users do not need to swipe back to Web4 for wallet backup and migration checks.</p>
+        </article>
+        <article class="info-card">
+          <h3>Change PIN</h3>
+          <p>The app Web5 tab also duplicates the wallet PIN action for faster security access while keeping the reveal flow protected by the current wallet rules.</p>
+        </article>
+        <article class="info-card">
+          <h3>Why App-Only</h3>
+          <p>Seed reveal and PIN changes are intentionally tied to the authenticated app experience. The public Web5 page stays read-only plus transfer-capable.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="worker-transfer" class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="eyebrow">Worker Transfer</div>
+          <h2>Transfer</h2>
+        </div>
+        <div class="table-note">Submit an ANT-denominated transfer to the mempool for inclusion in the next fast transfer block.</div>
+      </div>
+      <form id="txForm" class="tx-form">
+        <label>
+          <span>From Wallet</span>
+          <input id="txFrom" placeholder="ANET..." required>
+        </label>
+        <label>
+          <span>To Wallet</span>
+          <input id="txTo" placeholder="ANET..." required>
+        </label>
+        <label>
+          <span>Amount (ANTS)</span>
+          <input id="txAmount" type="number" min="1" step="1" placeholder="4882812" required>
+        </label>
+        <label>
+          <span>Fee (ANTS)</span>
+          <input id="txFee" type="number" min="0" step="1" value="0" required>
+        </label>
+        <label>
+          <span>Memo (Optional)</span>
+          <input id="txMemo" maxlength="160" placeholder="What this transfer is for">
+        </label>
+        <label class="seed-field">
+          <span>Sender Seed Phrase</span>
+          <input id="txSeed" type="password" placeholder="12-word wallet seed" required>
+        </label>
+        <button type="submit">Queue Transaction</button>
+      </form>
+      <div id="txResult" class="tx-result">Transactions remain in the mempool until the next TPoW transfer block is created. This Web5 page uses the same seed-based sender authorization as the public explorer for current private-mainnet compatibility.</div>
+    </section>
+
+    <section class="table-shell">
+      <div class="table-head">
+        <div>
+          <div class="eyebrow">Live Chain Feed</div>
+          <h2>Recent Blocks</h2>
+        </div>
+        <div class="table-note">Data source: <span class="mono">explorer.a-network.net/blocks</span> and <span class="mono">explorer.a-network.net/stats/investor</span></div>
+      </div>
+      <div id="errorBox" class="error" style="display:none;"></div>
+      <table>
+        <thead>
+          <tr><th>Block</th><th>Hash</th><th>Validators</th><th>Transactions</th><th>Epoch End</th></tr>
+        </thead>
+        <tbody id="blocksBody">
+          <tr><td colspan="5" class="muted">Loading live block feed...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    const EXPLORER_API_BASE = 'https://explorer.a-network.net';
+    const txForm = document.getElementById('txForm');
+    const txFrom = document.getElementById('txFrom');
+    const txTo = document.getElementById('txTo');
+    const txAmount = document.getElementById('txAmount');
+    const txFee = document.getElementById('txFee');
+    const txMemo = document.getElementById('txMemo');
+    const txSeed = document.getElementById('txSeed');
+    const txResult = document.getElementById('txResult');
+    let liveDataRequest = null;
+    let liveDataTimer = null;
+
+    function buildApiUrl(path) {
+      return new URL(path, `${EXPLORER_API_BASE}/`).toString();
+    }
+
+    function setTxMessage(message, tone = 'muted') {
+      txResult.textContent = message;
+      txResult.className = `tx-result${tone === 'muted' ? '' : ` ${tone}`}`;
+    }
+
+    function formatCount(value) {
+      return Number(value || 0).toLocaleString();
+    }
+
+    function formatCadence(seconds) {
+      if (!seconds && seconds !== 0) return 'Unknown';
+      if (seconds === 1) return '1 Second Settlement Window';
+      if (seconds < 60) return `${seconds} Second Settlement Windows`;
+      if (seconds === 60) return '1 Minute Settlement Window';
+      if (seconds < 3600) return `${Math.floor(seconds / 60)} Minute Settlement Windows`;
+      return `${Math.floor(seconds / 3600)} Hour Settlement Windows`;
+    }
+
+    async function submitTransfer(event) {
+      event.preventDefault();
+      setTxMessage('Submitting transfer to the colony mempool...');
+
+      try {
+        const response = await fetch(buildApiUrl('transactions'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: txFrom.value.trim(),
+            to: txTo.value.trim(),
+            amount_ants: Number(txAmount.value || 0),
+            fee_ants: Number(txFee.value || 0),
+            memo: txMemo.value.trim(),
+            sender_seed: txSeed.value.trim(),
+          }),
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Transaction request failed');
+        }
+
+        txResult.innerHTML = `Queued transaction <strong>${result.transaction_id}</strong>.`;
+        txResult.className = 'tx-result ok';
+        txMemo.value = '';
+        txSeed.value = '';
+      } catch (error) {
+        setTxMessage(error.message || 'Transaction request failed', 'error');
+      }
+    }
+
+    async function fetchLiveData() {
+      if (liveDataRequest) {
+        return liveDataRequest;
+      }
+
+      const errorBox = document.getElementById('errorBox');
+      liveDataRequest = (async () => {
+        try {
+          const [blocksRes, statsRes] = await Promise.all([
+            fetch(buildApiUrl('blocks?limit=12')),
+            fetch(buildApiUrl('stats/investor'), {
+              headers: { 'Accept': 'application/json' }
+            })
+          ]);
+
+          if (!blocksRes.ok || !statsRes.ok) {
+            throw new Error('Failed to load live network data from explorer.a-network.net');
+          }
+
+          const blocks = await blocksRes.json();
+          const investor = await statsRes.json();
+          const latestBlock = Array.isArray(blocks) && blocks.length ? blocks[blocks.length - 1] : null;
+
+          document.getElementById('blockCount').textContent = latestBlock ? `#${latestBlock.block_height}` : 'Pending';
+          document.getElementById('sessionCount').textContent = formatCount(investor.metrics?.total_sessions);
+          document.getElementById('minerCount').textContent = formatCount(investor.metrics?.total_active_miners);
+          document.getElementById('activatedSupply').textContent = `${investor.activated_supply_anet || '0'} ANET`;
+          const cadenceSeconds = latestBlock
+            ? Math.max(1, Math.round((new Date(latestBlock.epoch_end) - new Date(latestBlock.epoch_start)) / 1000))
+            : null;
+          document.getElementById('cadence').textContent = formatCadence(cadenceSeconds);
+          document.getElementById('epochEnd').textContent = investor.current_epoch_end || 'Unavailable';
+
+          const body = document.getElementById('blocksBody');
+          body.innerHTML = '';
+
+          const recentBlocks = Array.isArray(blocks) ? [...blocks].reverse() : [];
+          if (!recentBlocks.length) {
+            body.innerHTML = '<tr><td colspan="5" class="muted">No settlement blocks yet. A block appears when transfers or newly synchronized Web2 supply need settlement.</td></tr>';
+            return;
+          }
+
+          for (const block of recentBlocks) {
+            const row = document.createElement('tr');
+            const blockHeight = block?.block_height ?? 'Unknown';
+            const blockHash = String(block?.hash ?? 'Unavailable');
+            const minerCount = formatCount(block?.miners?.length || 0);
+            const txCount = formatCount(block?.transactions?.length || 0);
+            const epochEnd = String(block?.epoch_end ?? 'Unavailable');
+
+            row.innerHTML = `
+              <td data-label="Block"><span class="kicker">Block #${blockHeight}</span></td>
+              <td data-label="Hash" class="mono">${blockHash}</td>
+              <td data-label="Validators">${minerCount}</td>
+              <td data-label="Transactions">${txCount}</td>
+              <td data-label="Epoch End" class="mono">${epochEnd}</td>
+            `;
+            body.appendChild(row);
+          }
+
+          errorBox.style.display = 'none';
+        } catch (error) {
+          errorBox.textContent = error.message || 'Failed to load live network data from explorer.a-network.net';
+          errorBox.style.display = 'block';
+          document.getElementById('blocksBody').innerHTML = '<tr><td colspan="5" class="muted">Live feed unavailable.</td></tr>';
+        } finally {
+          liveDataRequest = null;
+        }
+      })();
+
+      return liveDataRequest;
+    }
+
+    function scheduleLiveDataRefresh() {
+      window.clearTimeout(liveDataTimer);
+      liveDataTimer = window.setTimeout(async () => {
+        if (!document.hidden) {
+          await fetchLiveData();
+        }
+        scheduleLiveDataRefresh();
+      }, 15000);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('from')) txFrom.value = params.get('from');
+    if (params.get('to')) txTo.value = params.get('to');
+    if (params.get('amount_ants')) txAmount.value = params.get('amount_ants');
+    if (params.get('fee_ants')) txFee.value = params.get('fee_ants');
+    if (params.get('memo')) txMemo.value = params.get('memo');
+
+    txForm?.addEventListener('submit', submitTransfer);
+
+    fetchLiveData();
+    scheduleLiveDataRefresh();
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        fetchLiveData();
+      }
+    });
+  </script>
+</body>
+</html>
+
+
